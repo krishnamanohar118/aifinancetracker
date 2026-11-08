@@ -6,6 +6,9 @@ const api = axios.create({
     import.meta.env.VITE_API_URL ||
     "https://aifinancetracker.onrender.com/api"
   ).replace(/\/+$/, ""),
+
+  timeout: 120000,
+
   headers: {
     "Content-Type": "application/json",
   },
