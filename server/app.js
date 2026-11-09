@@ -14,20 +14,39 @@ import reportsRoutes from "./routes/reportsRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 
-import { errorHandler, notFound } from "./middleware/errorHandler.js";
+import {
+  errorHandler,
+  notFound,
+} from "./middleware/errorHandler.js";
 
 const app = express();
 
+// =========================
+// REQUEST LOGGING
+// =========================
+
+app.use((req, res, next) => {
+  console.log("INCOMING REQUEST:", req.method, req.url);
+  next();
+});
+
+// =========================
+// CORS CONFIGURATION
+// =========================
 
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
-       "https://finsightaiweb.vercel.app",
+      "https://finsightaiweb.vercel.app",
     ],
     credentials: true,
   }),
 );
+
+// =========================
+// MIDDLEWARE
+// =========================
 
 app.use(express.json());
 
@@ -36,29 +55,16 @@ app.use(express.json());
 // =========================
 
 app.use("/api/health", healthRoutes);
-
 app.use("/api/auth", authRoutes);
-
 app.use("/api/transactions", transactionsRoutes);
-
 app.use("/api/analytics", analyticsRoutes);
-
 app.use("/api/budgets", budgetsRoutes);
-
 app.use("/api/goals", goalsRoutes);
-
-// Existing chat route
 app.use("/api/chat", chatRoutes);
-
-// AI Finance Assistant
 app.use("/api/assistant", assistantRoutes);
-
 app.use("/api/notifications", notificationsRoutes);
-
 app.use("/api/reports", reportsRoutes);
-
 app.use("/api/profile", profileRoutes);
-
 app.use("/api/dashboard", dashboardRoutes);
 
 // =========================
@@ -66,7 +72,6 @@ app.use("/api/dashboard", dashboardRoutes);
 // =========================
 
 app.use(notFound);
-
 app.use(errorHandler);
 
 export default app;
